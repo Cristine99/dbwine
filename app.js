@@ -6,8 +6,8 @@ const chalk = require("chalk");
 const bodyParser = require("body-parser");
 const countriesModel = require("./models/Country");
 const expressSession = require("express-session");
-const User = require("./models/User");
 
+const morgan = require("morgan");
 
 /**
  * Controllers (route handlers).
@@ -19,6 +19,7 @@ const userController = require("./controllers/user");
 
 const app = express();
 app.set("view engine", "ejs");
+app.use(morgan('tiny'));
 
 /**
  * notice above we are using dotenv. We can now pull the values from our environment
@@ -98,15 +99,7 @@ app.get("/update-tasting/:id", tastingController.edit);
 app.get("/tastings", tastingController.list);
 app.get("/tastings/delete/:id", tastingController.delete);
 
-app.get("/join", (req, res) => {
-  res.render('create-user', { errors: {} })
-});
 
-app.post("/join", userController.create);
-app.get("/login", (req, res) => {
-  res.render('login-user', { errors: {} })
-});
-app.post("/login", userController.login);
 
 
 app.listen(WEB_PORT, () => {
